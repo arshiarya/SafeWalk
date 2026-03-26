@@ -1,10 +1,26 @@
 import osmnx as ox
+import networkx as nx
+import numpy as np
 
 # Download Delhi street map
 print("Downloading Delhi map... please wait ⏳")
-
 G = ox.graph_from_place("Delhi, India", network_type="walk")
-
 print("Graph created! ✅")
-print("Total nodes (intersections):", len(G.nodes))
-print("Total edges (roads):", len(G.edges))
+
+# Add safety weights to every edge (road)
+print("Adding safety weights to roads...")
+
+for u, v, data in G.edges(data=True):
+    # Mock safety scores (0 to 1) — will be replaced by real data later
+    crime_score = np.random.uniform(0, 1)      # 0 = safe, 1 = dangerous
+    lighting_score = np.random.uniform(0, 1)   # 0 = dark, 1 = well lit
+    crowd_score = np.random.uniform(0, 1)      # 0 = empty, 1 = crowded
+
+    # Safety weight formula
+    # Higher weight = more dangerous = avoid this road
+    safety_weight = (0.5 * crime_score) + (0.3 * (1 - lighting_score)) + (0.2 * (1 - crowd_score))
+
+    data['safety_weight'] = round(safety_weight, 4)
+
+print("Safety weights added! ✅")
+print("Sample edge data:", list(G.edges(data=True))[0])
