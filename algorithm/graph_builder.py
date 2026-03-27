@@ -40,3 +40,21 @@ print("Start Node:", start_node)
 print("End Node:", end_node)
 print("Safest Path (node IDs):", safest_path)
 print("Total nodes in path:", len(safest_path))
+
+
+
+# Convert node IDs to coordinates
+print("\nConverting nodes to coordinates...")
+
+coordinates = []
+for node in safest_path:
+    lat = G.nodes[node]['y']   # latitude
+    lon = G.nodes[node]['x']   # longitude
+    coordinates.append((lat, lon))
+
+print("Coordinates of safest path:")
+for i, coord in enumerate(coordinates[:5]):  # show first 5 only
+    print(f"  Stop {i+1}: lat={coord[0]:.6f}, lon={coord[1]:.6f}")
+
+print(f"  ... and {len(coordinates)-5} more stops")
+print("\nTotal coordinates:", len(coordinates))
