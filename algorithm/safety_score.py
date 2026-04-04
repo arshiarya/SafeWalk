@@ -1,44 +1,43 @@
 import pandas as pd
+from datetime import datetime
 
-data = pd.read_csv("algorithm/safety_data.csv")
+# Load dataset
+data = pd.read_csv("algorithm/final_dataset.csv")
 
 
-def lighting_penalty(l):
+def get_crowd():
+    hour = datetime.now().hour
 
-    if l == "low":
-        return 5
-    elif l == "medium":
-        return 2
+    if 8 <= hour <= 11 or 17 <= hour <= 21:
+        return "high"
+    elif 12 <= hour <= 16:
+        return "medium"
     else:
-        return 0
+        return "low"
 
 
 def crowd_penalty(c):
-
-    if c == "low":
-        return 4
+    if c == "high":
+        return 1
     elif c == "medium":
-        return 2
+        return 3
     else:
-        return 0
+        return 5
 
 
 def safety_score(row):
+    crowd = get_crowd()
 
-    score = 0
-
-    score += row["crime_rate"] * 2
-    score += lighting_penalty(row["lighting"])
-    score += crowd_penalty(row["crowd"])
+    score = row["crime_rate"] * 2
+    score += crowd_penalty(crowd)
 
     return score
 
 
 def get_safety_scores():
-
     scores = {}
 
-    for i, row in data.iterrows():
+    for _, row in data.iterrows():
         scores[row["area"]] = safety_score(row)
 
     return scores
