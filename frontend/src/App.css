@@ -128,10 +128,25 @@ body {
   color: gray;
 }
 
-.icon {
+/* .icon {
   font-size: 24px;
-  background: #eaf2ff; /* soft blue */
+  background: #eaf2ff; 
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
+} */
+
+.icon {
+  width: 50px;
+  height: 50px;
+  background: #e6f0ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon img {
+  width: 26px;
+  height: 26px;
 }
