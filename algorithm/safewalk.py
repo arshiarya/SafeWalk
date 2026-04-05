@@ -3,9 +3,12 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 from math import radians, sin, cos, sqrt, atan2
+import os
 
 # Load crime data from CSV
-safety_data = pd.read_csv("final_dataset.csv")
+# Get the directory where safewalk.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+safety_data = pd.read_csv(os.path.join(BASE_DIR, "final_dataset.csv"))
 
 def get_crime_score(lat, lon):
     """Find nearest area and return its crime score"""
