@@ -10,7 +10,7 @@
 2. Create new Web Service
 3. Connect GitHub and select `SafeWalk` repo
 4. Fill in:
-   - **Root Directory:** `SafeWalk/backend`
+   - **Root Directory:** `backend` (NOT SafeWalk/backend)
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port 8000`
 5. Add Environment Variable: `FRONTEND_URL` = (leave blank for now)
@@ -22,7 +22,7 @@
 1. Sign up at https://vercel.com
 2. Import GitHub repo
 3. Select **Framework:** React
-4. Select **Root directory:** `SafeWalk/frontend`
+4. Select **Root directory:** `frontend` (NOT SafeWalk/frontend)
 5. Add Environment Variable: `VITE_API_URL` = (paste backend URL from Step 1)
 6. Click **Deploy**
 7. Copy frontend URL

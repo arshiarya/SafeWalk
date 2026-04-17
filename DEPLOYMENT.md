@@ -29,7 +29,7 @@
      Build Command: pip install -r requirements.txt
      Start Command: uvicorn main:app --host 0.0.0.0 --port 8000
      Environment: Python 3.11
-     Root Directory: SafeWalk/backend
+     Root Directory: backend
      ```
    - Add Environment Variables:
      ```
@@ -59,7 +59,7 @@
    ```
    Build command: npm run build
    Publish directory: dist
-   Root directory: SafeWalk/frontend
+   Root directory: frontend
    ```
 4. Environment Variables:
    ```
