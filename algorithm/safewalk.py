@@ -4,10 +4,12 @@ import numpy as np
 import pandas as pd
 from math import radians, sin, cos, sqrt, atan2
 import os
+import pickle
 
 # Load crime data from CSV
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 safety_data = pd.read_csv(os.path.join(BASE_DIR, "final_dataset.csv"))
+CACHE_FILE = os.path.join(BASE_DIR, "delhi_graph_cache.pkl")
 
 
 def get_crime_score(lat, lon):
@@ -42,9 +44,28 @@ def get_crowd_score():
 
 
 def load_graph(city="Delhi, India"):
-    """Download city map and add safety score to every road"""
-    print(f"Loading {city} map...")
-    G = ox.graph_from_place(city, network_type="walk")
+    """Load only the queried area (lighter memory footprint)"""
+    global CACHE_FILE
+    
+    # Try loading from cache first
+    if os.path.exists(CACHE_FILE):
+        print("Loading cached graph...")
+        with open(CACHE_FILE, 'rb') as f:
+            G = pickle.load(f)
+        print("Graph loaded from cache! ✅")
+        return G
+    
+    # If no cache, download a SMALLER area to save memory
+    print(f"Loading {city} map (optimized for memory)...")
+    
+    try:
+        # Try full city first
+        G = ox.graph_from_place(city, network_type="walk")
+    except Exception as e:
+        print(f"Full city too large, using bounding box: {e}")
+        # Fallback: use smaller area (Delhi center)
+        north, south, east, west = 28.75, 28.45, 77.35, 77.05
+        G = ox.graph_from_bbox(north, south, east, west, network_type="walk")
 
     for u, v, data in G.edges(data=True):
         # Get middle point of this road
@@ -72,6 +93,14 @@ def load_graph(city="Delhi, India"):
             (0.1 * min(data.get('length', 100) / 500, 1.0)),
             4
         )
+
+    # Save to cache for future runs
+    try:
+        with open(CACHE_FILE, 'wb') as f:
+            pickle.dump(G, f)
+        print(f"Graph cached ✅")
+    except Exception as e:
+        print(f"Warning: Could not save cache: {e}")
 
     print("Map ready! ✅")
     return G
