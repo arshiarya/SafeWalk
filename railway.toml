@@ -1,5 +1,2 @@
-[build]
-builder = "dockerfile"
-
-[deploy]
-startCommand = "cd SafeWalk/backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+# Railway will auto-detect the Dockerfile in backend/
+# No configuration needed - just push and deploy!
